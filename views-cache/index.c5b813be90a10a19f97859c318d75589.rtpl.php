@@ -1,4 +1,6 @@
-<?php if(!class_exists('Rain\Tpl')){exit;}?><div class="slider-area">
+<?php if(!class_exists('Rain\Tpl')){exit;}?>
+<link rel="stylesheet" href="css/owl.carousel.css">
+<div class="slider-area">
     <!-- Slider -->
     <div class="block-slider block-slider4">
         <ul class="" id="bxslider-home4">
