@@ -179,25 +179,27 @@ class Tpl {
     }
 
     protected function checkTemplate($template) {
-        // set filename
+        // Definir nome do arquivo
         $templateName = basename($template);
         $templateBasedir = strpos($template, DIRECTORY_SEPARATOR) ? dirname($template) . DIRECTORY_SEPARATOR : null;
         $templateDirectory = static::$conf['tpl_dir'] . $templateBasedir;
         $templateFilepath = $templateDirectory . $templateName . '.' . static::$conf['tpl_ext'];
         $parsedTemplateFilepath = static::$conf['cache_dir'] . $templateName . "." . md5($templateDirectory . serialize(static::$conf['checksum'])) . '.rtpl.php';
-
-        // if the template doesn't exsist throw an error
+    
+        // Se o template não existir, lançar um erro
         if (!file_exists($templateFilepath)) {
             $e = new Tpl\NotFoundException('Template ' . $templateName . ' not found!');
-            throw $e->templateFile($templateFilepath);
+            throw $e; // Corrigido para throw $e;
         }
-
-        // Compile the template if the original has been updated
-        if (static::$conf['debug'] || !file_exists($parsedTemplateFilepath) || ( filemtime($parsedTemplateFilepath) < filemtime($templateFilepath) ))
+    
+        // Compilar o template se o original foi atualizado
+        if (static::$conf['debug'] || !file_exists($parsedTemplateFilepath) || (filemtime($parsedTemplateFilepath) < filemtime($templateFilepath))) {
             $this->compileFile($templateName, $templateBasedir, $templateDirectory, $templateFilepath, $parsedTemplateFilepath);
-
+        }
+    
         return $parsedTemplateFilepath;
     }
+    
 
     /**
      * Check if a string has been already compiled
