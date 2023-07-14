@@ -9,9 +9,6 @@ use \Hcode\Mailer;
 class Products extends Model {
 
 
-
-
-
    public static function listAll()
    {
 
@@ -21,26 +18,25 @@ class Products extends Model {
 
    }
 
-  public function save (){
-   
-    $sql = new Sql();
-       $results = $sql -> select("CALL sp_products_save(:idproduct, :desproduct, :vlprice, :vlheight, :vlwidth, :vllength, :vlweight, :desurl)",array(
-              ":idproduct"  => $this ->getidproduct(),
-              ":desproduct" => $this -> getdesproduct(),
-              ":vlprice"    => $this -> getvlprice(),
-              ":vlheight"   => $this -> getvlheight(),
-              ":vlwidth"    => $this -> getvlwidth(),
-              ":vllength"   => $this -> getvllength(),
-              ":vlweight"   => $this -> getvlweight(),
-              ":desurl"     => $this -> geturl()
- 
+public function save()
+   {
 
-     ));
+      $sql = new Sql();
 
-       $this ->setData($results[0]);
-              
+      $results = $sql->select("CALL sp_products_save(:idproduct, :desproduct, :vlprice, :vlwidth, :vlheight, :vllength, :vlweight, :desurl)", array(
+         ":idproduct"=>$this->getidproduct(),
+         ":desproduct"=>$this->getdesproduct(),
+         ":vlprice"=>$this->getvlprice(),
+         ":vlwidth"=>$this->getvlwidth(),
+         ":vlheight"=>$this->getvlheight(),
+         ":vllength"=>$this->getvllength(),
+         ":vlweight"=>$this->getvlweight(),
+         ":desurl"=>$this->getdesurl()
+      ));
 
-  }
+      $this->setData($results[0]);
+
+   }
 
   public function get($idproduct){
 
