@@ -165,8 +165,8 @@ $app -> get("/admin/forgot/sent", function () {
 
 
 });
-$app ->get("/admin/categories", function () {
-    User ::verifyLogin();
+$app ->get("/admin/categories", function() {
+    User::verifyLogin();
 
     $categories = Category :: listAll();
     $page = new PageAdmin();
@@ -216,7 +216,7 @@ $app->get("/admin/categories/:idcategory/delete", function($idcategory){
 
 $app-> get ("/admin/categories/:idcategory", function($idcategory){
      
-     User ::verifyLogin();
+    User::verifyLogin();
     $category = new Category();
     $category -> get ((int)$idcategory);
 
@@ -232,7 +232,7 @@ $app-> get ("/admin/categories/:idcategory", function($idcategory){
 
 });
 $app-> post ("/admin/categories/:idcategory", function($idcategory){
-    User ::verifyLogin();
+    User::verifyLogin();
 
     $category = new Category();
     $category -> get ((int)$idcategory);
@@ -246,18 +246,19 @@ $app-> post ("/admin/categories/:idcategory", function($idcategory){
 });
 
 
-$app-> get("/categories/:idcategory", function($idcategory){
+$app->get("/categories/:idcategory", function($idcategory){
+   
+   $category = new Category();
 
-   $category = new Category(); 
-   $category -> get((int)$idcategory);
-
+   $category-> get((int)$idcategory);
    $page = new Page();
 
-   $page -> setTpl ("category",[
-      'category' => $category -> getValues(),
-      'products' => []
+   $page->setTpl("category",[
+    'category' => $category->getValues(),
+    'products' =>[]
 
    ]);
+
 
 });
 
