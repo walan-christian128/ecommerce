@@ -18,6 +18,16 @@ class Products extends Model {
 
    }
 
+   public static function checkList($list) {
+    foreach ($list as &$row) {
+        $p = new Products();
+        $p->setData($row);
+        $row = $p->getValues();
+    }
+
+    return $list;
+}
+
 public function save()
    {
 
@@ -84,11 +94,11 @@ public function save()
   }
    public function getValues(){
 
-     $this -> checkPhoto();
+     $this->checkPhoto();
      
-     $valeus = parent::getValues();
+     $values = parent::getValues();
 
-     return $valeus;
+     return $values;
       
    }
 
@@ -111,12 +121,13 @@ public function save()
         case "png":
             $image = imagecreatefrompng($file['tmp_name']);
             break;
+
     }
 
    $dist = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 
-         "res" . DIRECTORY_SEPARATOR . 
-         "site" . DIRECTORY_SEPARATOR . 
-         "img" . DIRECTORY_SEPARATOR . 
+         "res"      . DIRECTORY_SEPARATOR . 
+         "site"     . DIRECTORY_SEPARATOR . 
+         "img"      . DIRECTORY_SEPARATOR . 
          "products" . DIRECTORY_SEPARATOR . 
          $this->getidproduct() . ".jpg";
 

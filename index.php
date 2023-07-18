@@ -9,14 +9,21 @@ use \Hcode\PageAdmin;
 use \Hcode\Model\User;
 use \Hcode\Model\Category;
 use \Hcode\Model\Products;
+///inicio da classe login 
 
 $app = new Slim();
 
 $app->config('debug', true);
 
 $app->get('/', function () {
+
+    $products = Products::listAll();
+
     $page = new Page();
-    $page->setTpl("index");
+
+    $page->setTpl("index", [
+      'products'=>Products::checkList($products)
+    ]);
 
 });
 
@@ -55,6 +62,7 @@ $app->get('/admin/logout', function () {
     exit;
 
 });
+ ///rotas usuarios adm
 
 $app->get("/admin/users", function () {
     User::verifyLogin();
@@ -166,6 +174,7 @@ $app -> get("/admin/forgot/sent", function () {
 
 
 });
+///rotas das categorias adm/usuario
 $app ->get("/admin/categories", function() {
     User::verifyLogin();
 
@@ -196,10 +205,6 @@ $app ->post("/admin/categories/create", function () {
   header('Location: /admin/categories');
    exit;
 });
-
-
-
-
 
 $app->get("/admin/categories/:idcategory/delete", function($idcategory){
      User ::verifyLogin();
@@ -263,10 +268,15 @@ $app->get("/categories/:idcategory", function($idcategory){
 
 });
 
+///rotas dos produtos adm/usuario
+
 $app->get("/admin/products",function(){
     User::verifyLogin();
+
     $products = Products::listAll();
+
     $page = new PageAdmin();
+
     $page ->setTpl("products",[
       "products"=>$products
     ]);
