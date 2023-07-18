@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once("vendor/autoload.php");
+require_once("functions.php");
 
 use \Slim\Slim;
 
@@ -9,6 +10,8 @@ use \Hcode\PageAdmin;
 use \Hcode\Model\User;
 use \Hcode\Model\Category;
 use \Hcode\Model\Products;
+
+
 ///inicio da classe login 
 
 $app = new Slim();
@@ -253,7 +256,6 @@ $app-> post ("/admin/categories/:idcategory", function($idcategory){
 
 
 $app->get("/categories/:idcategory", function($idcategory){
-   
    $category = new Category();
 
    $category-> get((int)$idcategory);
@@ -261,12 +263,64 @@ $app->get("/categories/:idcategory", function($idcategory){
 
    $page->setTpl("category",[
     'category' => $category->getValues(),
-    'products' =>[]
+    'products' => Products::checkList($category ->getProducts())
 
    ]);
 
 
 });
+
+$app->get("/admin/categories/:idcategory/products", function($idcategory){
+    User::verifyLogin();
+
+   $category = new Category();
+
+   $category-> get((int)$idcategory);
+
+   $page = new PageAdmin();
+
+   $page->setTpl("categories-products",[
+    'category' => $category->getValues(),
+    'productsRelated' =>$category->getProducts(),
+    'productsNotRelated'=>$category->getProducts(false)
+   ]);
+
+
+});
+
+$app->get("/admin/categories/:idcategory/products/:idproduct/add", function($idcategory, $idproduct){
+    User::verifyLogin();
+
+   $category = new Category();
+
+   $category-> get((int)$idcategory);
+
+   $products = new Products();
+
+   $products ->get((int)$idproduct);
+   $category-> addProduct($products);
+
+   header("Location:/admin/categories/".$idcategory."/products");
+   exit;
+
+});
+$app->get("/admin/categories/:idcategory/products/:idproduct/remove", function($idcategory, $idproduct){
+    User::verifyLogin();
+
+   $category = new Category();
+
+   $category-> get((int)$idcategory);
+
+   $products = new Products();
+
+   $products ->get((int)$idproduct);
+   $category-> removeProduct($products);
+
+   header("Location:/admin/categories/".$idcategory."/products");
+   exit;
+
+});
+
 
 ///rotas dos produtos adm/usuario
 
@@ -356,6 +410,9 @@ $app->get("/admin/products/:idproduct/delete", function($idproduct){
     
 });
 
+
+
 $app ->run ();
+
 
 ?>

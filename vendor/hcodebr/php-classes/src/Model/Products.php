@@ -28,6 +28,12 @@ class Products extends Model {
     return $list;
 }
 
+public static function formatPrice($vlPrice){
+ 
+
+
+}
+
 public function save()
    {
 
