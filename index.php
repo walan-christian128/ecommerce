@@ -10,6 +10,7 @@ use \Hcode\PageAdmin;
 use \Hcode\Model\User;
 use \Hcode\Model\Category;
 use \Hcode\Model\Products;
+use \Hcode\Model\Cart;
 
 
 ///inicio da classe login 
@@ -303,6 +304,17 @@ $app->get("/products/:desurl",function($desurl){
     ]);
 
 });
+
+$app->get("/cart", function(){
+
+    $cart = Cart::getFromSession();
+
+   $page = new Page();
+
+   $page->setTpl("cart");
+
+});
+
 
 $app->get("/admin/categories/:idcategory/products", function($idcategory){
     User::verifyLogin();
