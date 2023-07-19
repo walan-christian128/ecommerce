@@ -109,17 +109,18 @@ public function getProductsPage($page = 1, $itemsPerPage = 8){
    $sql = new Sql();
 
    $results = $sql -> select("SELECT SQL_CALC_FOUND_ROWS * FROM tb_products a
-inner join tb_productscategories b on a.idproduct = b.idproduct
-inner join tb_categories c on c.idcategory = b.idcategory
-where c.idcategory = :idcategory
-limit $start, $itemsPerPage
+                              inner join tb_productscategories b on a.idproduct = b.idproduct
+                              inner join tb_categories c on c.idcategory = b.idcategory
+                              WHERE c.idcategory = :idcategory
+                              limit $start, $itemsPerPage
 
 ",[
 
   'idcategory' => $this ->getidcategory()
-]);
 
-$resultsTotal = $sql->select("SELECT FOUND_ROWS() as  nrtotal;");
+  ]);
+
+$resultsTotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal;");
 
 return [
          'data' => Products::checkList($results),
